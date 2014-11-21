@@ -3,7 +3,7 @@ Strict
 Public
 
 ' Imports (Monkey):
-Import util
+Import screen
 
 ' Imports (Native):
 #If SCREEN_SUPPORTED
@@ -11,18 +11,18 @@ Import util
 #End
 
 ' Constant variable(s):
-#If TARGET = "glfw" Or TARGET = "sexy"
-	Const GL_TRUE:Int = 1
-	Const GL_FALSE:Int = 0
+#If SCREEN_GLFW2_TARGET
+	Const SCREEN_GL_TRUE:Int = 1
+	Const SCREEN_GL_FALSE:Int = 0
 	
-	Const GLFW_FSAA_SAMPLES:Int = $00020013
+	Const SCREEN_GLFW_FSAA_SAMPLES:Int = $00020013
 #End
 
 ' External bindings:
 Extern
 
 ' Functions:
-#If TARGET = "glfw" Or TARGET = "sexy"
+#If SCREEN_GLFW2_TARGET
 	Function SetWindowDestination:Void(X:Int, Y:Int)="desktopWindow::setDestination"
 	
 	Function MoveWindow:Void(X:Int, Y:Int)="desktopWindow::move"

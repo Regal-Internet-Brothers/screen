@@ -2,6 +2,9 @@ Strict
 
 Public
 
+' Imports (Internal):
+Import external
+
 ' Imports (External):
 #If Not TOGGLE_CURSOR_IMPLEMENTED
 	#If BRL_GAMETARGET_IMPLEMENTED
@@ -11,9 +14,6 @@ Public
 		#TOGGLE_CURSOR_AVAILABLE = True
 	#End
 #End
-
-' Imports (Internal):
-Import external
 
 ' Classes:
 ' Nothing so far.
@@ -43,7 +43,7 @@ Import external
 	End
 #End
 
-#If Not TOGGLE_CURSOR_IMPLEMENTED
+#If TOGGLE_CURSOR_FALLBACK_IMPLEMENTED
 	' Functions:
 	Function ToggleCursor:Int(Toggle:Bool)
 		#If TOGGLE_CURSOR_FALLBACK_IMPLEMENTED

@@ -6,23 +6,23 @@ Public
 #If BRL_GAMETARGET_IMPLEMENTED
 
 ' Preprocessor related:
-#If TARGET = "glfw" Or TARGET = "sexy"
-	#GLFW_TARGET = True
+#If (TARGET = "glfw" Or TARGET = "sexy") And (Not GLFW_VERSION Or GLFW_VERSION = 2)
+	#SCREEN_GLFW2_TARGET = True
 #End
 
-#If GLFW_TARGET
+#If SCREEN_GLFW2_TARGET
 	#DESKTOP_WINDOW_TRANSITION = True
 #End
 
-#If TARGET = "glfw" Or TARGET = "sexy" Or TARGET = "xna"
+#If SCREEN_GLFW2_TARGET Or TARGET = "xna"
 	#SCREEN_SUPPORTED = True
 #End
 
-#If TARGET = "glfw" Or TARGET = "sexy" Or TARGET = "xna"
+#If SCREEN_GLFW2_TARGET Or TARGET = "xna"
 	#APPTITLE_IMPLEMENTED = True
 #End
 
-#If (TARGET = "glfw" Or TARGET = "sexy") And HOST = "winnt"
+#If SCREEN_GLFW2_TARGET And HOST = "winnt"
 	#CONFINE_CURSOR_IMPLEMENTED = True
 	#TOGGLE_CURSOR_AVAILABLE = True
 #End
@@ -52,7 +52,7 @@ Import mojo.app
 Public
 
 ' Preprocessor related:
-#If LANG = "cpp" And HOST = "winnt" And Not FLAG_CONSOLEMODE
+#If SCREEN_GLFW2_TARGET And HOST = "winnt"
 	#TOGGLE_CURSOR_IMPLEMENTED = True
 #End
 
@@ -67,10 +67,7 @@ Global CurrentWindowMode:DesktopScreenMode = Null
 '#End
 
 ' Check if there was already a window created:
-#If FLAG_DESKTOP = 1
-#End
-
-#If TARGET <> "xna" And ((DEFAULT_DESKTOP_WINDOW_W > 0 And DEFAULT_DESKTOP_WINDOW_H > 0) Or (GLFW_TARGET And GLFW_WINDOW_WIDTH > 0 And GLFW_WINDOW_WIDTH > 0))
+#If TARGET <> "xna" And ((DEFAULT_DESKTOP_WINDOW_W > 0 And DEFAULT_DESKTOP_WINDOW_H > 0) Or (SCREEN_GLFW2_TARGET And GLFW_WINDOW_WIDTH > 0 And GLFW_WINDOW_WIDTH > 0))
 	Global WindowCreated:Bool = True
 #Else
 	Global WindowCreated:Bool = False
@@ -212,7 +209,7 @@ Class DesktopScreenMode Implements SerializableElement
 		' Target frame-rate.
 		Framerate = S.ReadInt()
 		
-		#If TARGET <> "glfw" And TARGET <> "sexy"
+		#If SCREEN_GLFW2_TARGET
 			If (Framerate < 0) Then
 				Framerate = Default_Framerate
 			Endif
@@ -503,7 +500,7 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 	
 	' Change the resolution if possible:
 	#If FLAG_DESKTOP
-		#If GLFW_TARGET
+		#If SCREEN_GLFW2_TARGET
 			' Local variable(s):
 			Local GlfwInstance:= GlfwGame.GetGlfwGame()
 		#End
@@ -517,7 +514,7 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 					
 					If (WindowCreated) Then
 						If (CurrentWindowMode = Null) Then
-							#If (GLFW_TARGET And GLFW_WINDOW_FULLSCREEN) Or (DEFAULT_DESKTOP_FULLSCREEN)
+							#If (SCREEN_GLFW2_TARGET And GLFW_WINDOW_FULLSCREEN) Or (DEFAULT_DESKTOP_FULLSCREEN)
 								IsFullscreen = True
 							#Else
 								IsFullscreen = False
@@ -538,7 +535,7 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 			Endif
 		#End
 		
-		#If GLFW_TARGET
+		#If SCREEN_GLFW2_TARGET
 			' Color related:
 			Local RBits:Int = 0
 			Local GBits:Int = 0
@@ -597,10 +594,9 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 				Endif
 			Endif
 			
-			GlfwOpenWindowHint(GLFW_FSAA_SAMPLES, AASamples)
+			GlfwOpenWindowHint(SCREEN_GLFW_FSAA_SAMPLES, AASamples)
 			
 			GlfwInstance.SetGlfwWindow(Width, Height, RBits, GBits, BBits, ABits, Depth, Stencil, Fullscreen)
-			'Method SetGlfwWindow:Void( width:Int,height:Int,red:Int,green:Int,blue:Int,alpha:Int,depth:Int,stencil:Int,fullscreen:Bool )
 		#Else
 			Local Width:Int = -1
 			Local Height:Int = -1
@@ -688,7 +684,7 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 				Local Color:Int[]
 				
 				' If we have a color setup, use it:
-				#If GLFW_TARGET
+				#If SCREEN_GLFW2_TARGET
 					If (RBits <> 0 Or GBits <> 0 Or BBits <> 0 Or ABits <> 0 Or Depth <> 0 Or Stencil <> 0) Then
 						Color = [RBits, GBits, BBits, ABits, Depth, Stencil]
 					Endif
