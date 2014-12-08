@@ -17,9 +17,6 @@ Credit would be appreciated, but it's not a requirement.
 	Credit would be appreciated, but it's not a requirement.
 	*/
 	
-	// Credits:
-	// Current version by:	Sonickidnextgen (Anthony Diamond)
-	
 	// Includes:
 	#if !defined(_WIN32) //#if defined(__linux__)
 		#include <unistd.h>
@@ -35,22 +32,7 @@ Credit would be appreciated, but it's not a requirement.
 	#include <cmath>
 	#include <algorithm>
 	
-	/*
-	float std::min(float, float);
-	float std::max(float, float);
-	*/
-	
-	// Preprocessor related:	
-	/*
-	#if !defined(max)
-		#define max(X, Y) (X > Y) ? X : Y
-	#endif
-	
-	#if !defined(min)
-		#define min(X, Y) (X < Y) ? X : Y
-	#endif
-	*/
-	
+	// Preprocessor related:
 	#if defined(_WIN32)
 		#define TOGGLE_CURSOR_IMPLEMENTED
 	#endif
@@ -103,7 +85,7 @@ Credit would be appreciated, but it's not a requirement.
 			static float destinationY;
 			
 			// Platform specific variables:
-			#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+			#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 				static GLFWvidmode desktop;
 			#else
 				// Nothing so far.
@@ -186,7 +168,7 @@ Credit would be appreciated, but it's not a requirement.
 				}
 			#endif
 			
-			#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+			#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 				static inline GLFWvidmode* desktopVideoMode();
 			#else
 				// Nothing so far.
@@ -240,7 +222,7 @@ Credit would be appreciated, but it's not a requirement.
 	} currentWindow;
 	
 	// Global variables:
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		GLFWvidmode desktopWindow::desktop;
 	#endif
 	
@@ -291,7 +273,7 @@ desktopWindow::~desktopWindow()
 inline void desktopWindow::appTitle(String s)
 {
 	// Set the title of the window to the string specified:
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		glfwSetWindowTitle(s.ToCString<char>());
 	#else
 		// Nothing so far.
@@ -307,7 +289,7 @@ void desktopWindow::toDestination(int currentX, int currentY, int x, int y, bool
 	// Temporary variables:
 	bool transition = true;
 	
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		GLFWvidmode* desktopMode;
 		BBGlfwGame* glfwGame;
 		
@@ -345,7 +327,7 @@ void desktopWindow::toDestination(int currentX, int currentY, int x, int y, bool
 		delay(100);
 		
 		// Repeat until the transition variable is false.
-		#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1						
+		#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1						
 			while (transition == true)
 			{			
 				// Update the transition.
@@ -397,7 +379,7 @@ inline void desktopWindow::setDestination(int x, int y)
 
 inline void desktopWindow::toCenter()
 {
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1 //|| defined(CFG_POPCAP_TARGET) && CFG_POPCAP_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1 //|| defined(CFG_POPCAP_TARGET) && CFG_POPCAP_TARGET == 1
 		int windowX = (int)(abs((int)(desktopVideoMode()->Width - currentWindow.width)/2));
 		int windowY = (int)(abs((int)(desktopVideoMode()->Height - currentWindow.height)/2));
 		
@@ -628,7 +610,7 @@ inline void desktopWindow::delay(unsigned int ms)
 
 inline void desktopWindow::setWindowPos(int x, int y)
 {
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		glfwSetWindowPos(x, y);
 	#else
 		// Nothing so far. (Unsupported)
@@ -643,7 +625,7 @@ inline void desktopWindow::updateTransition(bool& transition, float& transitionX
 	using namespace std;
 	
 	// Tell GLFW to poll for events.
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		glfwPollEvents();
 	#endif
 
@@ -671,7 +653,7 @@ inline void desktopWindow::updateTransition(bool& transition, float& transitionX
 
 inline void desktopWindow::calculateDestination()
 {
-	#if defined(CFG_GLFW_TARGET) && CFG_GLFW_TARGET == 1
+	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		if (destinationX == NOVAR)
 			destinationX = ((desktopVideoMode()->Width - currentWindow.width)/2);
 			
