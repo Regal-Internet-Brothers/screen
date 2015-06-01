@@ -79,6 +79,15 @@ Class DesktopScreenMode Implements SerializableElement
 	
 	' General:
 	
+	' Flags (Only useful when using the standard Mojo backend):
+	Const FLAG_FULLSCREEN:Int = 1
+	Const FLAG_RESIZABLE:Int = 2
+	Const FLAG_DECORATED:Int = 4
+	Const FLAG_FLOATING:Int = 8
+	Const FLAG_DEPTH_BUFFERED:Int = 16
+	Const FLAG_SINGLE_BUFFERED:Int = 32
+	Const FLAG_SECOND_MONITOR:Int = 64
+	
 	' Color related:
 	Const COLOR_ARRAY_LENGTH:Int = 6
 	
@@ -475,6 +484,8 @@ Class DesktopScreenMode Implements SerializableElement
 	Field AASamples:Int
 	Field Framerate:Int
 	
+	Field Flags:Int
+	
 	' Fields (Private):
 	Private
 	
@@ -623,7 +634,11 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 				XNA_ToggleAA((AASamples > 0))
 			#End
 			
-			SetDeviceWindow(Width, Height, Int(Fullscreen))
+			If (Resolution.Flags <> 0) Then
+				SetDeviceWindow(Width, Height, Resolution.Flags)
+			Else
+				SetDeviceWindow(Width, Height, Int(Fullscreen)|DesktopScreenMode.FLAG_RESIZABLE|DesktopScreenMode.FLAG_DECORATED) ' FLAG_FULLSCREEN
+			Endif
 		#End
 		
 		' Set the response to true.
