@@ -101,7 +101,9 @@ Class DesktopScreenMode Implements SerializableElement
 	' I/O related:
 	Const ZERO:Int = 0
 	
-	Const IOVersion:Int = 2
+	Const IOVersion:Int = 3
+	
+	Const IOVERSION_EXT_NATIVE_FLAGS:Int = 3
 	
 	' Global variable(s):
 	' Nothing so far.
@@ -249,6 +251,10 @@ Class DesktopScreenMode Implements SerializableElement
 			Next
 		Endif
 		
+		If (IOVersion >= IOVERSION_EXT_NATIVE_FLAGS) Then
+			Flags = S.ReadInt()
+		Endif
+		
 		' Construct the screen-mode.
 		ConstructDSM(Width, Height, Fullscreen, AASamples, Framerate, Transition, New Vector2D<IntObject>(X, Y), Color)
 		
@@ -321,6 +327,10 @@ Class DesktopScreenMode Implements SerializableElement
 			For Local Padding:= 0 Until Max(COLOR_ARRAY_LENGTH-Color.Length(), 0)
 				S.WriteByte(ZERO)
 			Next
+		Endif
+		
+		If (IOVersion >= IOVERSION_EXT_NATIVE_FLAGS) Then
+			S.WriteInt(Flags)
 		Endif
 		
 		' Return the default response.
@@ -498,11 +508,11 @@ Class DesktopScreenMode Implements SerializableElement
 End
 
 ' Functions:
-Function ResizeWindow:Bool(Resolution:DesktopScreenMode)
-	Return InitWindow(Resolution, True)
+Function ResizeWindow:Bool(Resolution:DesktopScreenMode, ForceFlags:Bool=False)
+	Return InitWindow(Resolution, True, ForceFlags)
 End
 
-Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
+Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False, ForceFlags:Bool=False)
 	' Check if the window has already been created.
 	If (WindowCreated And Not Force) Then Return False
 	
@@ -634,7 +644,7 @@ Function InitWindow:Bool(Resolution:DesktopScreenMode, Force:Bool=False)
 				XNA_ToggleAA((AASamples > 0))
 			#End
 			
-			If (Resolution.Flags <> 0) Then
+			If (ForceFlags Or (Resolution.Flags <> 0)) Then
 				SetDeviceWindow(Width, Height, Resolution.Flags)
 			Else
 				SetDeviceWindow(Width, Height, Int(Fullscreen)|DesktopScreenMode.FLAG_RESIZABLE|DesktopScreenMode.FLAG_DECORATED) ' FLAG_FULLSCREEN
