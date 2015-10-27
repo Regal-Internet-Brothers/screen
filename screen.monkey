@@ -27,24 +27,21 @@ Public
 	#TOGGLE_CURSOR_AVAILABLE = True
 #End
 
-' Imports:
+' Imports (Public):
 
 ' Preprocessor:
-Import preprocessor.defaults
-Import preprocessor.flags
+Import regal.preprocessor.defaults
+Import regal.preprocessor.flags
 
 ' General:
-Import util
-Import vector
-Import ioelement
+Import regal.util
+Import regal.vector
+Import regal.ioelement
 
 ' BRL:
 Import brl.stream
 
-' Mojo (Public):
-' Nothing so far.
-
-' Mojo (Private):
+' Imports (Private):
 Private
 
 Import mojo.app

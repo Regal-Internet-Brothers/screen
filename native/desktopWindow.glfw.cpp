@@ -275,6 +275,8 @@ inline void desktopWindow::appTitle(String s)
 	// Set the title of the window to the string specified:
 	#if defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 1
 		glfwSetWindowTitle(s.ToCString<char>());
+	#elif defined(CFG_SCREEN_GLFW2_TARGET) && CFG_SCREEN_GLFW2_TARGET == 3
+		glfwSetWindowTitle(BBGlfwGame::GlfwGame()->GetGLFWwindow(), s.ToCString<char>());
 	#else
 		// Nothing so far.
 	#endif

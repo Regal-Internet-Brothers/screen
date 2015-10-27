@@ -3,7 +3,7 @@ Strict
 Public
 
 ' Imports (Monkey):
-Import screen
+Import screen ' regal.screen
 
 ' Imports (Native):
 #If SCREEN_SUPPORTED
